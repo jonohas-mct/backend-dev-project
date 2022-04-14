@@ -1,0 +1,11 @@
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+var app = builder.Build();
+app.MapSwagger();
+app.UseSwaggerUI();
+
+app.MapGet("/", () => "Hello World!");
+
+app.Run();
