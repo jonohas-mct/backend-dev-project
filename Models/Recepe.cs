@@ -8,5 +8,7 @@ public class Recepe {
     public string? Name { get; set; }
     public List<IngredientAmount>? Ingredients { get; set; }
     public List<string>? Steps { get; set; }
+    public int DurationMinutes { get; set; }
+    public List<Utensil> Utensils { get; set; }
 }
 

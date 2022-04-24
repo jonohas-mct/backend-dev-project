@@ -35,10 +35,23 @@ public class RecepeRepository : IRecepeRepository {
 
                 if (searchIngredient == null) {
                     await _context.IngredientCollection.InsertOneAsync(ingredientAmount.Ingredient);
+                    searchIngredient = await _context.IngredientCollection.Find<Ingredient>(r => r.Name == ingredientAmount.Ingredient.Name).FirstOrDefaultAsync();
                 }
 
-                ingredientAmount.Ingredient = await _context.IngredientCollection.Find<Ingredient>(r => r.Name == ingredientAmount.Ingredient.Name).FirstOrDefaultAsync();
+                ingredientAmount.Ingredient = searchIngredient;
             }
+
+            for (int i = 0; i < recepe.Utensils.Count; i++)
+            {
+                var _utensil = recepe.Utensils[i];
+                var searchUtensil = await _context.UtensilCollection.Find<Utensil>(u => u.Name == _utensil.Name).FirstOrDefaultAsync();
+                if (searchUtensil == null) {
+                    await _context.UtensilCollection.InsertOneAsync(_utensil);
+                    searchUtensil = await _context.UtensilCollection.Find<Utensil>(u => u.Name == _utensil.Name).FirstOrDefaultAsync();
+                }
+                recepe.Utensils[i] = searchUtensil;
+            }
+
             await _context.RecepeCollection.InsertOneAsync(recepe);
             return recepe;
         } catch (Exception e) {
@@ -50,9 +63,30 @@ public class RecepeRepository : IRecepeRepository {
     public async Task<Recepe> UpdateRecepe( Recepe recepe) {
         try {
             var filter = Builders<Recepe>.Filter.Eq("Id", recepe.Id);
-            var update = Builders<Recepe>.Update.Set("Name", recepe.Name);
-            update = Builders<Recepe>.Update.Set("Ingredients", recepe.Ingredients);
-            var results = await _context.RecepeCollection.UpdateOneAsync(filter,update);
+            foreach (IngredientAmount ingredientAmount in recepe.Ingredients)
+            {
+                var searchIngredient = await _context.IngredientCollection.Find<Ingredient>(r => r.Name == ingredientAmount.Ingredient.Name).FirstOrDefaultAsync();
+
+                if (searchIngredient == null) {
+                    await _context.IngredientCollection.InsertOneAsync(ingredientAmount.Ingredient);
+                    searchIngredient = await _context.IngredientCollection.Find<Ingredient>(r => r.Name == ingredientAmount.Ingredient.Name).FirstOrDefaultAsync();
+                }
+
+                ingredientAmount.Ingredient = searchIngredient;
+            }
+
+            for (int i = 0; i < recepe.Utensils.Count; i++)
+            {
+                var _utensil = recepe.Utensils[i];
+                var searchUtensil = await _context.UtensilCollection.Find<Utensil>(u => u.Name == _utensil.Name).FirstOrDefaultAsync();
+                if (searchUtensil == null) {
+                    await _context.UtensilCollection.InsertOneAsync(_utensil);
+                    searchUtensil = await _context.UtensilCollection.Find<Utensil>(u => u.Name == _utensil.Name).FirstOrDefaultAsync();
+                }
+                recepe.Utensils[i] = searchUtensil;
+            }
+            await _context.RecepeCollection.ReplaceOneAsync(filter, recepe, new ReplaceOptions() {IsUpsert = true});
+
             return await GetRecepe(recepe.Id);
         } catch (Exception e) {
             Console.WriteLine(e);
