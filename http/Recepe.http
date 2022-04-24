@@ -1,0 +1,59 @@
+GET http://localhost:5090/recepes HTTP/1.1
+
+###
+
+GET http://localhost:5090/recepes/6263f3858645c943e109df04 HTTP/1.1
+
+###
+
+POST http://localhost:5090/recepes HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Pancakes",
+    "ingredients": [
+        {
+            "ingredient": {
+                "name": "Suggar"
+            },
+            
+            "amount": 100,
+            "unit": "g"
+        },
+        {
+            "ingredient": {
+                "name": "Eggs"
+            },
+            
+            "amount": 2
+        }
+    ],
+    "steps": [
+        "Roeren",
+        "Eten"
+    ]
+}
+
+###
+
+PUT http://localhost:5090/recepes HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "6263f3858645c943e109df04",
+    "name": "NogIets",
+    "ingredients": [
+        {
+            "ingredient": {
+                "name": "Banaan"
+            },
+            
+            "amount": 100,
+            "unit": ""
+        }
+    ]
+}
+
+###
+
+DELETE http://localhost:5090/recepes/6263f3858645c943e109df04 HTTP/1.1
