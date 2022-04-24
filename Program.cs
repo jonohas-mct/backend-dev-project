@@ -7,8 +7,8 @@ builder.Services.AddSingleton<IMongoContext, MongoContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IRecepeRepository, RecepeRepository>();
-builder.Services.AddTransient<IRecepeService, RecepeService>();
 builder.Services.AddValidatorsFromAssemblyContaining<RecepeValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RecepeInputValidator>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 
@@ -34,16 +34,16 @@ app.UseSwaggerUI();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/recepes", async (IRecepeService recepeService) => {
+app.MapGet("/recepes", async (IRecepeRepository recepeService) => {
     var recepes = await recepeService.GetRecepes();
     return Results.Ok(recepes);
 });
 
-app.MapGet("/recepes/{recepeId}", async (IRecepeService recepeService, string recepeId) => {
+app.MapGet("/recepes/{recepeId}", async (IRecepeRepository recepeService, string recepeId) => {
     return Results.Ok(await recepeService.GetRecepe(recepeId));
 });
 
-app.MapPost("/recepes", async (IValidator<Recepe> validator, Recepe recepe, IRecepeService recepeService) => {
+app.MapPost("/recepes", async (IValidator<Recepe> validator, Recepe recepe, IRecepeRepository recepeService) => {
 
     var validationResults = validator.Validate(recepe);
     if (!(validationResults.IsValid)) {
@@ -54,7 +54,7 @@ app.MapPost("/recepes", async (IValidator<Recepe> validator, Recepe recepe, IRec
     return Results.Created($"/recepes/{recepe.Id}",r);
 });
 
-app.MapPut("/recepes", async (IValidator<Recepe> validator, Recepe recepe, IRecepeService recepeService) => {
+app.MapPut("/recepes", async (IValidator<Recepe> validator, Recepe recepe, IRecepeRepository recepeService) => {
 
     var validationResults = validator.Validate(recepe);
     if (!(validationResults.IsValid)) {
@@ -65,9 +65,10 @@ app.MapPut("/recepes", async (IValidator<Recepe> validator, Recepe recepe, IRece
     return Results.Created($"/recepes/{recepe.Id}",r);
 });
 
-app.MapDelete("/recepes/{recepeId}", async (IRecepeService recepeService, string recepeId) => {
+app.MapDelete("/recepes/{recepeId}", async (IRecepeRepository recepeService, string recepeId) => {
     await recepeService.DeleteRecepe(recepeId);
     return Results.Ok();
 });
 
 app.Run();
+public partial class Program { }
