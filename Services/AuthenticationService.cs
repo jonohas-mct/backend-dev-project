@@ -2,6 +2,7 @@ namespace backend_dev_project.Services;
 
 public record UserInfo(string id, string username, string email);
 public record AuthenticationRequestBody(string username, string password);
+public record AuthenticationResponseBody(string token);
 
 public interface IAuthenticationService {
     Task<UserInfo> ValidateUser(string username, string password);

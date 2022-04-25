@@ -137,7 +137,7 @@ app.MapPost("/authenticate", async (IAuthenticationService authenticationService
 
 
 
-    return Results.Ok(tokenToReturn);
+    return Results.Ok(new AuthenticationResponseBody (tokenToReturn));
 });
 
 app.Run();
