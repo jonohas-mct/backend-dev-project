@@ -7,6 +7,7 @@ public interface IMongoContext {
     IMongoCollection<Recepe> RecepeCollection { get; }
     IMongoCollection<Ingredient> IngredientCollection { get; }
     IMongoCollection<Utensil> UtensilCollection { get; }
+    IMongoCollection<User> UserCollection { get; }
 
 }
 
@@ -54,6 +55,14 @@ public class MongoContext : IMongoContext
         get
         {
             return _database.GetCollection<Utensil>(_settings.UtensilCollection);
+        }
+    }
+
+    public IMongoCollection<User> UserCollection
+    {
+        get
+        {
+            return _database.GetCollection<User>(_settings.UserCollection);
         }
     }
 }

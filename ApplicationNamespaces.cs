@@ -19,8 +19,16 @@ global using FluentValidation;
 global using FluentValidation.AspNetCore;
 global using backend_dev_project.Validators;
 
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using System.Security.Claims;
+global using Microsoft.AspNetCore.Authorization;
+
 global using AutoMapper;
 
 global using HotChocolate.Data.Filters;
 
 global using GraphQL.Server.Ui.Voyager;
+
+global using BCrypt.Net;

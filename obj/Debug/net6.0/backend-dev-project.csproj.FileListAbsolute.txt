@@ -78,3 +78,4 @@
 /Users/jonasfaber/Documents/Github/_org_jonohas-mct/backend-dev-project/bin/Debug/net6.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/jonasfaber/Documents/Github/_org_jonohas-mct/backend-dev-project/bin/Debug/net6.0/Microsoft.Extensions.DiagnosticAdapter.dll
 /Users/jonasfaber/Documents/Github/_org_jonohas-mct/backend-dev-project/bin/Debug/net6.0/Newtonsoft.Json.dll
+/Users/jonasfaber/Documents/Github/_org_jonohas-mct/backend-dev-project/bin/Debug/net6.0/BCrypt.Net-Next.dll

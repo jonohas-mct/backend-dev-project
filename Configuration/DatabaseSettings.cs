@@ -6,4 +6,5 @@ public class DatabaseSettings {
     public string? RecepeCollection { get; set; }
     public string? IngredientCollection { get; set; }
     public string? UtensilCollection { get; set; }
+    public string? UserCollection { get; set; }
 }

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ta+6oNnd9gd9Q3REpjF8UPLc6uJ1MWsEUk6eSuqWu7i6TPIPWKFTGO9Vt1IXlqNojejW1gxiVYq4P5xgSSbWAg==",
+  "dgSpecHash": "+ZOQ8wHdfXiauNuMXI9gnTZoA1xQ2UD8iKdNAzD8jCBeoD8U0FeiMIZgBXTm7S3k29ELf62QwDuo5ciO9G49bQ==",
   "success": true,
   "projectFilePath": "/Users/jonasfaber/Documents/Github/_org_jonohas-mct/backend-dev-project/backend-dev-project.csproj",
   "expectedPackageFiles": [
     "/Users/jonasfaber/.nuget/packages/automapper/10.1.1/automapper.10.1.1.nupkg.sha512",
     "/Users/jonasfaber/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/8.1.1/automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
+    "/Users/jonasfaber/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/Users/jonasfaber/.nuget/packages/csvhelper/27.2.1/csvhelper.27.2.1.nupkg.sha512",
     "/Users/jonasfaber/.nuget/packages/dnsclient/1.4.0/dnsclient.1.4.0.nupkg.sha512",
     "/Users/jonasfaber/.nuget/packages/fluentvalidation/10.3.5/fluentvalidation.10.3.5.nupkg.sha512",
