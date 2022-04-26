@@ -6,6 +6,8 @@ public record AuthenticationResponseBody(string token);
 
 public interface IAuthenticationService {
     Task<UserInfo> ValidateUser(string username, string password);
+
+    Task<User> AddUser(User user);
 }
 
 public class AuthenticationService : IAuthenticationService {
@@ -30,4 +32,20 @@ public class AuthenticationService : IAuthenticationService {
         // Check user password valid
         
     }
+
+    public async Task<User> AddUser(User user){
+        var exists = await _userRepository.GetUser(user.Username);
+
+        if (exists != null) {
+            return null;
+        }
+
+        var hash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        user.Password = hash;
+
+        await _userRepository.AddUser(user);
+        return await _userRepository.GetUser(user.Username);
+    }
+
+    
 }

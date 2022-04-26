@@ -77,6 +77,9 @@ app.MapPost("/recepes", [Authorize] async (IValidator<Recepe> validator, Recepe 
         return Results.BadRequest(errors);
     }
     var r = await recepeService.AddRecepe(recepe);
+    if (r == null) {
+        return Results.Conflict();
+    }
     return Results.Created($"/recepes/{recepe.Id}",r);
 });
 
@@ -88,6 +91,9 @@ app.MapPut("/recepes", [Authorize] async (IValidator<Recepe> validator, Recepe r
         return Results.BadRequest(errors);
     }
     var r = await recepeService.UpdateRecepe(recepe);
+    if (r == null) {
+        return Results.Conflict();
+    }
     return Results.Created($"/recepes/{recepe.Id}",r);
 });
 
@@ -134,11 +140,32 @@ app.MapPost("/authenticate", async (IAuthenticationService authenticationService
 
     var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-
-
-
     return Results.Ok(new AuthenticationResponseBody (tokenToReturn));
 });
+
+app.MapPost("/favorites", [Authorize] async (IUserRepository userRepository, ClaimsPrincipal user, List<string> favorites) => {
+
+    var userName = user.Claims.FirstOrDefault(c => c.Type == "nickname").Value;
+    var favoritesNew = await userRepository.AddFavorites(userName, favorites);
+    
+    return Results.Ok(favoritesNew);
+});
+
+app.MapGet("/favorites", [Authorize] async (IUserRepository userRepository, ClaimsPrincipal user) => {
+
+    var userName = user.Claims.FirstOrDefault(c => c.Type == "nickname").Value;
+    var favorites = await userRepository.GetFavorites(userName);
+    
+    return Results.Ok(favorites);
+});
+app.MapDelete("/favorites", [Authorize] async (IUserRepository userRepository, ClaimsPrincipal user, string favorites) => {
+    var favoritesList = favorites.Split(",");
+    var userName = user.Claims.FirstOrDefault(c => c.Type == "nickname").Value;
+    var favoritesNew = await userRepository.RemoveFavorites(userName, favoritesList);
+    
+    return Results.Ok(favoritesNew);
+});
+
 
 app.Run();
 public partial class Program { }

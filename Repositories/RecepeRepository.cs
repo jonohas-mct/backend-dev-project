@@ -28,6 +28,10 @@ public class RecepeRepository : IRecepeRepository {
     }
 
     public async Task<Recepe> AddRecepe (Recepe recepe) {
+        var findRecepe = await _context.RecepeCollection.Find<Recepe>(r => r.Name == recepe.Name).FirstOrDefaultAsync();
+        if (findRecepe != null) {
+            return null;
+        }
         try {
             foreach (IngredientAmount ingredientAmount in recepe.Ingredients)
             {
@@ -61,6 +65,10 @@ public class RecepeRepository : IRecepeRepository {
     }
 
     public async Task<Recepe> UpdateRecepe( Recepe recepe) {
+        var findRecepe = await _context.RecepeCollection.Find<Recepe>(r => r.Name == recepe.Name).FirstOrDefaultAsync();
+        if (findRecepe != null) {
+            return null;
+        }
         try {
             var filter = Builders<Recepe>.Filter.Eq("Id", recepe.Id);
             foreach (IngredientAmount ingredientAmount in recepe.Ingredients)
