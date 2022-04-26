@@ -167,5 +167,5 @@ app.MapDelete("/favorites", [Authorize] async (IUserRepository userRepository, C
 });
 
 
-app.Run();
+app.Run("http://0.0.0.0:3000");
 public partial class Program { }

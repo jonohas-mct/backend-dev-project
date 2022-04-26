@@ -10,7 +10,6 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
-
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
