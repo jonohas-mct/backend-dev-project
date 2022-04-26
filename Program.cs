@@ -115,6 +115,7 @@ app.MapGet("/utensils", [Authorize] async (IUtensilRepository utensilRepository)
 app.MapPost("/authenticate", async (IAuthenticationService authenticationService, AuthenticationRequestBody user, IOptions<AuthenticationSettings> authSettings) => {
     var _settings = authSettings.Value;
     var valid = await authenticationService.ValidateUser(user.username, user.password);
+
     if (valid == null) {
         return Results.BadRequest();
     }
@@ -167,5 +168,5 @@ app.MapDelete("/favorites", [Authorize] async (IUserRepository userRepository, C
 });
 
 
-app.Run("http://0.0.0.0:3000");
+app.Run();
 public partial class Program { }

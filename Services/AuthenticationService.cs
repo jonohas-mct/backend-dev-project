@@ -29,7 +29,6 @@ public class AuthenticationService : IAuthenticationService {
             return new UserInfo(user.Id, user.Username, user.Email);
         }
         return null;
-        // Check user password valid
         
     }
 

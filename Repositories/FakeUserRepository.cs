@@ -1,8 +1,25 @@
 namespace backend_dev_project.Repositories;
-public class FakeRecepeRepository : IRecepeRepository {
-    public static List<Recepe> _recepes = new List<Recepe>();
 
-    public FakeRecepeRepository () {
+
+public class FakeUserRepository : IUserRepository {
+
+    private static List<User> _users = new List<User>();
+    private static List<Recepe> _recepes = new List<Recepe>();
+
+    private readonly FakeRecepeRepository _fakeRecepeRepository;
+
+    public FakeUserRepository () {
+
+        _users.Add(new User() {
+            Id = "1",
+            Username = "JonahasFake",
+            Email = "jonas.h.faber@fa.ke",
+            Password = "$2a$11$o/JoOhKOEde3F9FKjZpGqeMAjkj2ALesRx4V6YcDb9DL0DE.551e.",
+            Favorites = new List<string>() {
+                "1",
+                "2"
+            }
+        });
 
         _recepes.Add(new Recepe() {
             Id = "1",
@@ -92,37 +109,96 @@ public class FakeRecepeRepository : IRecepeRepository {
         });
 
     }
-
-    public async Task<List<Recepe>> GetRecepes () {
-        return _recepes;
+    public async Task<List<User>> GetUsers () {
+        return _users;
+    }
+    public async Task<User> GetUser (string username) {
+        return _users.Find(r => r.Username == username);
     }
 
-    public async Task<Recepe> GetRecepe (string recepeId) {
-        Recepe r = _recepes.Find(e => e.Id == recepeId);
-        return r;
+    public async Task<User> AddUser (User user) {
+        try {
+            _users.Add(user);
+            return user;
+        } catch (Exception e) {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
-    public async Task<Recepe> AddRecepe (Recepe recepe) {
-        _recepes.Add(recepe);
+    public async Task<List<Recepe>> GetFavorites(string username) {
+        var user = _users.FirstOrDefault(r => r.Username == username);
 
-        return recepe;
+        if (user == null) {
+            return null;
+        }
+
+        List<Recepe> favorites = new List<Recepe>();
+
+        foreach (var favorite in user.Favorites)
+        {
+            
+            var recepe = _recepes.FirstOrDefault(r => r.Id == favorite);
+            favorites.Add(recepe);
+        }
+
+        return favorites; 
     }
 
-    public async Task<Recepe> UpdateRecepe( Recepe recepe) {
-        Recepe update = _recepes.Find(e => e.Id == recepe.Id);
-        update.Ingredients = recepe.Ingredients;
-        update.Name = recepe.Name;
-        update.Steps = recepe.Steps;
-        update.Utensils = recepe.Utensils;
-        update.DurationMinutes = recepe.DurationMinutes;
+    public async Task<List<Recepe>> AddFavorites (string username, List<string> favorites) {
+        var user = _users.FirstOrDefault(r => r.Username == username);
 
-        return update;
+        if (user == null) {
+            return null;
+        }
+
+        for (int i = 0; i < favorites.Count; i++)
+        {
+            var exists = user.Favorites.Find(f => f == favorites[i]);
+            if (exists == null) {
+                user.Favorites.Add(favorites[i]);
+            }
+        }
+        List<Recepe> favoritesList = new List<Recepe>();
+
+        foreach (var favorite in user.Favorites)
+        {
+            
+            var recepe = _recepes.FirstOrDefault(r => r.Id == favorite);
+            favoritesList.Add(recepe);
+        }
+
+        return favoritesList; 
     }
 
-    public async Task DeleteRecepe(string recepeId) {
-        Recepe recepeToRemove = _recepes.Single(r => r.Id == recepeId);
-        _recepes.Remove(recepeToRemove);
+    public async Task<List<Recepe>> RemoveFavorites (string username, string[] favorites) {
+        var user = _users.FirstOrDefault(r => r.Username == username);
+
+        if (user == null) {
+            return null;
+        }
+
+        foreach (var fa in favorites)
+        {
+            var exists = user.Favorites.Find(f => f == fa);
+            if (exists != null) {
+                user.Favorites.Remove(fa);
+            }
+        }
+        List<Recepe> favoritesList = new List<Recepe>();
+
+        foreach (var favorite in user.Favorites)
+        {
+            
+            var recepe = _recepes.FirstOrDefault(r => r.Id == favorite);
+            favoritesList.Add(recepe);
+        }
+
+        return favoritesList; 
     }
-
-
 }
+
+
+
+
+
