@@ -29,6 +29,9 @@
             "preLaunchTask": "docker-run: debug",
             "netCore": {
                 "appProject": "${workspaceFolder}/backend-dev-project.csproj"
+            },
+            "dockerServerReadyAction": {
+                "uriFormat": "%s://localhost:%s/"
             }
         }
     ]

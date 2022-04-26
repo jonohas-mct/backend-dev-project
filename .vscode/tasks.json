@@ -50,6 +50,7 @@
                 "context": "${workspaceFolder}",
                 "pull": true
             },
+
             "netCore": {
                 "appProject": "${workspaceFolder}/backend-dev-project.csproj"
             }
@@ -76,7 +77,15 @@
             "dependsOn": [
                 "docker-build: debug"
             ],
-            "dockerRun": {},
+            "dockerRun": {
+                "env": {
+                    "ASPNETCORE_URLS": "http://+:3000"
+                },
+                "ports": [
+                    { "containerPort": 3000, "hostPort": 3000 },
+                ]
+            
+            },
             "netCore": {
                 "appProject": "${workspaceFolder}/backend-dev-project.csproj",
                 "enableDebugging": true
@@ -88,7 +97,14 @@
             "dependsOn": [
                 "docker-build: release"
             ],
-            "dockerRun": {},
+            "dockerRun": {
+                "env": {
+                    "ASPNETCORE_URLS": "http://+:3000"
+                },
+                "ports": [
+                    { "containerPort": 3000, "hostPort": 3000 },
+                ]            
+            },
             "netCore": {
                 "appProject": "${workspaceFolder}/backend-dev-project.csproj"
             }

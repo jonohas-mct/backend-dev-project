@@ -58,7 +58,7 @@ app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", [Authorize] () => "Hello World!");
+app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/recepes", [Authorize] async (IRecepeRepository recepeService) => {
     var recepes = await recepeService.GetRecepes();
