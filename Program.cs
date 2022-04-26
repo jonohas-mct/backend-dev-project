@@ -66,7 +66,11 @@ app.MapGet("/recepes", [Authorize] async (IRecepeRepository recepeService) => {
 });
 
 app.MapGet("/recepes/{recepeId}", [Authorize] async (IRecepeRepository recepeService, string recepeId) => {
-    return Results.Ok(await recepeService.GetRecepe(recepeId));
+    var result = await recepeService.GetRecepe(recepeId);
+    if (result == null) {
+        return Results.NotFound();
+    }
+    return Results.Ok(result);
 });
 
 app.MapPost("/recepes", [Authorize] async (IValidator<Recepe> validator, Recepe recepe, IRecepeRepository recepeService) => {
@@ -94,12 +98,16 @@ app.MapPut("/recepes", [Authorize] async (IValidator<Recepe> validator, Recepe r
     if (r == null) {
         return Results.Conflict();
     }
-    return Results.Created($"/recepes/{recepe.Id}",r);
+    
+    return Results.Ok(r);
 });
 
 app.MapDelete("/recepes/{recepeId}", [Authorize] async (IRecepeRepository recepeService, string recepeId) => {
-    await recepeService.DeleteRecepe(recepeId);
-    return Results.Ok();
+    var deleted = await recepeService.DeleteRecepe(recepeId);
+    if (deleted) {
+        return Results.Ok();
+    }
+    return Results.NotFound();
 });
 
 app.MapGet("/ingredients", [Authorize] async (IIngredientRepository ingredientRepository) => {

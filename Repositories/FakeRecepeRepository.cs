@@ -98,18 +98,25 @@ public class FakeRecepeRepository : IRecepeRepository {
     }
 
     public async Task<Recepe> GetRecepe (string recepeId) {
-        Recepe r = _recepes.Find(e => e.Id == recepeId);
+        Recepe r = _recepes.FirstOrDefault(e => e.Id == recepeId);
         return r;
     }
 
     public async Task<Recepe> AddRecepe (Recepe recepe) {
+        Recepe r = _recepes.FirstOrDefault(e => e.Name == recepe.Name);
+        if (r != null) {
+            return null;
+        }
         _recepes.Add(recepe);
-
         return recepe;
     }
 
     public async Task<Recepe> UpdateRecepe( Recepe recepe) {
-        Recepe update = _recepes.Find(e => e.Id == recepe.Id);
+        Recepe r = _recepes.FirstOrDefault(e => e.Name == recepe.Name);
+        if (r != null) {
+            return null;
+        }
+        Recepe update = _recepes.FirstOrDefault(e => e.Id == recepe.Id);
         update.Ingredients = recepe.Ingredients;
         update.Name = recepe.Name;
         update.Steps = recepe.Steps;
@@ -119,9 +126,13 @@ public class FakeRecepeRepository : IRecepeRepository {
         return update;
     }
 
-    public async Task DeleteRecepe(string recepeId) {
-        Recepe recepeToRemove = _recepes.Single(r => r.Id == recepeId);
+    public async Task<bool> DeleteRecepe(string recepeId) {
+        Recepe recepeToRemove = _recepes.FirstOrDefault(r => r.Id == recepeId);
+        if (recepeToRemove == null) {
+            return false;
+        }
         _recepes.Remove(recepeToRemove);
+        return true;
     }
 
 

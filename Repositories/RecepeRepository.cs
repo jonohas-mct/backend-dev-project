@@ -5,7 +5,7 @@ public interface IRecepeRepository {
     Task<Recepe> GetRecepe(string recepeId);
     Task<Recepe> AddRecepe(Recepe recepe);
     Task<Recepe> UpdateRecepe(Recepe recepe);
-    Task DeleteRecepe(string recepeId);
+    Task<bool> DeleteRecepe(string recepeId);
 }
 
 public class RecepeRepository : IRecepeRepository {
@@ -102,8 +102,13 @@ public class RecepeRepository : IRecepeRepository {
         }
     }
 
-    public async Task DeleteRecepe(string recepeId) {
+    public async Task<bool> DeleteRecepe(string recepeId) {
+        var findRecepe = await _context.RecepeCollection.Find<Recepe>(r => r.Id == recepeId).FirstOrDefaultAsync();
+        if (findRecepe == null) {
+            return false;
+        }
         await _context.RecepeCollection.DeleteOneAsync(r => r.Id == recepeId);
+        return true;
     }
 
 
