@@ -13,11 +13,9 @@ public interface IAuthenticationService {
 public class AuthenticationService : IAuthenticationService {
 
     private readonly IUserRepository _userRepository;
-    private readonly IUserNotificationService _notificationService;
 
-    public AuthenticationService(IUserRepository userRepository, IUserNotificationService notificationService) {
+    public AuthenticationService(IUserRepository userRepository) {
         _userRepository = userRepository;
-        _notificationService = notificationService;
     }
 
     public async Task<UserInfo> ValidateUser(string username, string password) {
