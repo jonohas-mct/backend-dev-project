@@ -32,3 +32,6 @@ global using HotChocolate.Data.Filters;
 global using GraphQL.Server.Ui.Voyager;
 
 global using BCrypt.Net;
+
+global using MailKit;
+global using MimeKit;

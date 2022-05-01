@@ -13,9 +13,11 @@ public interface IAuthenticationService {
 public class AuthenticationService : IAuthenticationService {
 
     private readonly IUserRepository _userRepository;
+    private readonly IUserNotificationService _notificationService;
 
-    public AuthenticationService(IUserRepository userRepository) {
+    public AuthenticationService(IUserRepository userRepository, IUserNotificationService notificationService) {
         _userRepository = userRepository;
+        _notificationService = notificationService;
     }
 
     public async Task<UserInfo> ValidateUser(string username, string password) {
@@ -33,6 +35,7 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public async Task<User> AddUser(User user){
+        Console.WriteLine("Trying to add user");
         var exists = await _userRepository.GetUser(user.Username);
 
         if (exists != null) {
