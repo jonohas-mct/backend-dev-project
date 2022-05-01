@@ -8,8 +8,17 @@ public class Query
         return await recepeServive.GetRecepes();
     }
 
-
-    public string SayHello(string? name = "Jonas"){
-        return $"Hello {name}";
+    [UseFiltering]
+    [UseSorting]
+    public async Task<List<Ingredient>> GetIngredients([Service] IIngredientRepository ingredientRepository) {
+        return await ingredientRepository.GetIngredients();
     }
+    
+    [UseFiltering]
+    [UseSorting]
+    public async Task<List<Utensil>> GetUtensils([Service] IUtensilRepository utensilRepository) {
+        return await utensilRepository.GetUtensils();
+    }
+
+
 }
