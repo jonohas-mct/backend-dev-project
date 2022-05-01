@@ -15,7 +15,6 @@ builder.Services.AddTransient<IIngredientRepository, IngredientRepository>();
 builder.Services.AddTransient<IUtensilRepository, UtensilRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
-builder.Services.AddTransient<IUserNotificationService, UserNotificationService>();
 builder.Services.AddValidatorsFromAssemblyContaining<RecepeValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RecepeInputValidator>();
 builder.Services.AddAutoMapper(typeof(Program));
