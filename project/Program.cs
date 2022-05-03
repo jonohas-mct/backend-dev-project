@@ -6,12 +6,16 @@ builder.Services.Configure<DatabaseSettings>(dbSettings);
 var authSettings = builder.Configuration.GetSection("AuthenticationSettings");
 builder.Services.Configure<AuthenticationSettings>(authSettings);
 
+var chatSettings = builder.Configuration.GetSection("ChatSettings");
+builder.Services.Configure<ChatSettings>(chatSettings);
+
 builder.Services.AddSingleton<IMongoContext, MongoContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IRecepeRepository, RecepeRepository>();
 builder.Services.AddTransient<IRecepeService, RecepeService>();
+builder.Services.AddTransient<IChatService, ChatService>();
 
 builder.Services.AddTransient<IIngredientRepository, IngredientRepository>();
 builder.Services.AddTransient<IUtensilRepository, UtensilRepository>();
@@ -20,6 +24,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RecepeValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<QuestionValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RecepeInputValidator>();
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -187,6 +192,25 @@ app.MapPost("/users", [Authorize] async (IAuthenticationService authService, Cla
     }
 
     return Results.CreatedAtRoute($"/users/{addedUser.Id}", addedUser);
+});
+
+app.MapPost("/chat", [Authorize] async (IValidator<Question> validator, IChatService chatService, Question question, IOptions<ChatSettings> chatSettings) => {
+    var validationResults = validator.Validate(question);
+    if (!(validationResults.IsValid)) {
+        var errors = validationResults.Errors.Select(err => new { errors = err.ErrorMessage});
+        return Results.BadRequest(errors);
+    }
+    var hadBadWords = chatService.ContainsBadWords(question, chatSettings.Value.BadWords);
+
+    if (hadBadWords) {
+        return Results.BadRequest();
+    }
+
+    return Results.Ok();
+});
+
+app.MapGet("/forbiddenwords", async () => {
+
 });
 
 
